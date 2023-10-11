@@ -1,6 +1,7 @@
 services:
   app:
     image: pen-pixel-app:latest
+    pull_policy: always
     container_name: ${DOCKER_IMAGE_NAME}
     build:
       dockerfile: Dockerfile
@@ -14,8 +15,8 @@ services:
 #    depends_on:
 #      - postgres
 #      - redis
-#    networks:
-#      - pen-pixel-network
+    networks:
+      - pen-pixel-network
 
   postgres:
     image: pen-pixel-db:latest
@@ -25,24 +26,28 @@ services:
       dockerfile: Dockerfile.postgres
     env_file:
       - .env.pgdb
+    hostname: postgres
     ports:
       - '5432:5432'
-#    networks:
-#      - pen-pixel-network
+    networks:
+      - pen-pixel-network
 
   redis:
     image: redis:latest
     container_name: pen-pixel-redis
+    hostname: redis
     ports:
       - '6379:6379'
-#    networks:
-#      - pen-pixel-network
+    networks:
+      - pen-pixel-network
 
   redis_insight:
     image: redislabs/redisinsight:latest
     container_name: redis_insight
     ports:
       - 8001:8001
+    networks:
+      - pen-pixel-network
 
   pg_admin:
     image: dpage/pgadmin4
@@ -50,9 +55,9 @@ services:
       - "8888:80"
     env_file:
       - .env.pgadmin
-#    networks:
-#      - pen-pixel-network
+    networks:
+      - pen-pixel-network
 
-#networks:
-#  pen-pixel-network:
-#    driver: bridge
+networks:
+  pen-pixel-network:
+    driver: bridge

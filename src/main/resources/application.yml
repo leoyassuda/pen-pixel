@@ -19,15 +19,15 @@ spring:
       schema: public
   data:
     redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
+      timeout: 30000
       repositories:
         enabled: false
   cache:
     type: redis
     redis:
       time-to-live: 10s
-  redis:
-    host: ${REDIS_HOST:redis}
-    port: ${REDIS_PORT:6379}
   messages:
     basename: messages,config.i18n.messages
     encoding: UTF-8
